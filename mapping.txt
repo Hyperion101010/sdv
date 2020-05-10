@@ -1,1 +1,1 @@
-boostrap_proto : bootstrap_protocol
+bootstrap_proto : bootstrap_protocol
