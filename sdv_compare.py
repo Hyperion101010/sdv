@@ -1,7 +1,7 @@
 import json 
 import yaml
 
-# Load the contents of the giveon json, yaml and mapping file.
+# Load the contents of the given json, yaml and mapping file.
 def load_file():
 	try:
 		with open('platform_description_18March2020.json','r') as f:
