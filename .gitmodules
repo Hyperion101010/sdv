@@ -1,0 +1,3 @@
+[submodule "platform-description"]
+	path = platform-description
+	url = https://github.com/opensource-tnbt/platform-description
