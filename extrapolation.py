@@ -54,17 +54,17 @@ class Extrapolate():
 
         return val
 
-    def get_rack_name(self, val):
+    def get_rack_name(self):
         """get rack name """
         # perform operations. As of now none exists
 
-        return val
+        return "rack"
 
-    def get_device_name(self):
+    def get_device_name(self, val):
         """get device name """
         # perform operations. As of now none exists
 
-        return "device_name"
+        return val
 
     def get_az_name(self):
         """get az name """
@@ -82,9 +82,9 @@ class Extrapolate():
         """get hardware profile """
         # perform operations. As of now none exists
         temp = dict()
-        temp["ip"] = "ip"
-        temp["user"] = "user"
-        temp["password"] = "password"
+        temp["ip"] = "192.xxx.xxx.xxx"
+        temp["user"] = self.pd["extrapolation_info"]["ilo_password"]
+        temp["password"] = self.pd["extrapolation_info"]["ilo_user"]
 
         return temp
 
@@ -97,12 +97,8 @@ class Extrapolate():
 
             for _ in range(n):
                 temp = dict()
-                temp["hardware_profile"] = self.get_hardware_profile(val["hardware_profile"])
-                temp["interface_mapping_profile"] = self.get_interface_mapping_profile(val["interface_mapping_profile"])
-                temp["storage_profile"] = self.get_storage_profile(val["storage_profile"])
-                temp["platform_profile"] = self.get_platform_profile(val["platform_profile"])
-                temp["rack_name"] = self.get_rack_name(val["rack_profile"])
-                temp["device_name"] = self.get_device_name()
+                temp["rack"] = self.get_rack_name()
+                temp["device_name"] = self.get_device_name(val["name"])
                 temp["az_name"] = self.get_az_name()
                 temp["ha_name"] = self.get_ha_name()
                 temp["ipmi_info"] = self.get_ipmi_info()
@@ -116,5 +112,5 @@ class Extrapolate():
 
 
 if __name__ == "__main__":
-    obj = Extrapolate('platform_description_18March2020.json')
+    obj = Extrapolate('platform_description_12May2020.json')
     obj.extrapolate()
