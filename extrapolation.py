@@ -78,13 +78,15 @@ class Extrapolate():
 
         return "ha_name"
 
-    def get_ipmi_info(self):
+    def get_ipmi_info(self, ipmi, count, inc):
         """get hardware profile """
         # perform operations. As of now none exists
         temp = dict()
-        temp["ip"] = "192.xxx.xxx.xxx"
-        temp["user"] = self.pd["extrapolation_info"]["ilo_password"]
-        temp["password"] = self.pd["extrapolation_info"]["ilo_user"]
+        print('.'.join(ipmi.split('.')[:3]),)
+        temp["ip"] = str('.'.join(ipmi.split('.')[:3])) + '.' + str(int(ipmi.split('.')[-1]) + count*int(inc))
+        temp["user"] = self.pd["extrapolation_info"]["ilo_user"]
+        temp["password"] = self.pd["management_info"]["city"]+self.pd["management_info"]["area_name"]\
+            +self.pd["management_info"]["room_id"]+str(count)
 
         return temp
 
@@ -92,8 +94,16 @@ class Extrapolate():
         """ Perform Extrapolation """
         list_servers = []
 
+        # get ipmi info
+        count = 1
+        ipmi = ""
+        for val in self.pd["networks"]:
+            if val["name"] == 'ipmi':
+                ipmi = val["vip"].split('/')[0] # currently we will only take /24
+
         for val in self.pd["roles"]:
             n = int(val["count"]) # Number of servers in the particular role.
+
 
             for _ in range(n):
                 temp = dict()
@@ -101,7 +111,9 @@ class Extrapolate():
                 temp["device_name"] = self.get_device_name(val["name"])
                 temp["az_name"] = self.get_az_name()
                 temp["ha_name"] = self.get_ha_name()
-                temp["ipmi_info"] = self.get_ipmi_info()
+
+                temp["ipmi_info"] = self.get_ipmi_info(ipmi, count, self.pd["extrapolation_info"]["ip_increment"])
+                count += 1
 
                 list_servers.append(temp)
 
