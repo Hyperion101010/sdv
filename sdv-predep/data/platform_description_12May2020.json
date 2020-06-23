@@ -6,11 +6,21 @@
   "_comment_info1":"All Infos",
   "management_info": {
     "owner":"",
-    "area_name": "",
+    "area_name": "AZ",
     "area_center_name": "",
-    "room_name": "",
-    "city": "",
+    "room_id": "12",
+    "city": "KR",
     "resource_pool_name": ""
+  },
+  "ntp_info": {
+    "primary_ip":"",
+    "primary_zone":"",
+    "secondary_ip":"",
+    "secondary_zone":""
+  },
+  "syslog_info": {
+    "server_ip":"",
+    "transport":""
   },
   "dns_info": {
     "domain":"",
@@ -20,6 +30,12 @@
       }
     ]
   },
+  "proxy_info": {
+    "address":"",
+    "port":"",
+    "user":"",
+    "password":""
+  },
   "vim_info": {
     "vim_name": " ",
     "vim_id": " ",
@@ -27,27 +43,53 @@
     "version": " ",
     "installer":"",
     "deployment_style":"",
-    "container_orchestrator":""
+    "container_orchestrator":"",
+    "storage_type":""
   },
   "_comment_deployment":" Type can be OOK or NOOK",
   "deployment_info": {
+    "high_availability":"",
+    "introspection":"",
+    "deployment_type":"",
+    "installer_used":"",
     "workload_vnf":"",
-    "workload_cnf":""
+    "workload_cnf":"",
+    "sdn_controller":"",
+    "sdn_controller_version":"",
+    "sdn_controller_nbapps":"",
+    "vnfm":"",
+    "vnfm_version":"",
+    "data_plane_used":"",
+    "external_storage_cluster":"",
+    "cpu_allocation_ratio":"",
+    "es_cluster_info": {
+      "name":"",
+      "type":"",
+      "username":"",
+      "password":"",
+      "key":"",
+      "host_ips": [
+        {
+          "ip":""
+        }  
+      ],
+      "pools": [
+        {
+          "key":"",
+          "value":""
+        }
+      ]
+    }
   },
-  "global_info": {
-    "ip_version": " ",
-    "time_zone": " ",
-    "cluster_name": " ",
-    "master_server_ip": " ",
-    "master_server_timezone": " ",
-    "backup_server_ip": " ",
-    "backup_server_timezone": " "
+  "jumphost_info": {
+    "ip":"",
+    "name":""
   },
   "rack_info": [
     {
-      "rack_name":"",
+      "rack_id":"",
       "rack_details": {
-        "rack_id":"",
+        "rack_name":"",
         "rack_description":""
       }
     }  
@@ -56,14 +98,12 @@
   "bios_profile": [
     {
       "profile_name":"",
-      "profile_info": [
-        {
-          "bios_version": "",
-          "bios_mode":"",
-          "bootstrap_proto":"bootp",
-          "hyperthreading_enabled":""
-        }
-      ]
+      "bios_version": "",
+      "bios_mode":"bios",
+      "bootstrap_proto":"",
+      "hyperthreading_enabled":"",
+      "_comment":"C4_C6_MLC-STR_MLC-SPA_DCU_DCA_RAS_TURBO",
+      "bios_setting":""
     }
   ],
   "processor_profiles": [
@@ -73,6 +113,7 @@
         {
           "numa_id": "",
           "cpus":"",
+          "cpu_cflags":"",
           "speed": "",
           "cache_size":"",
           "model":"",
@@ -89,6 +130,7 @@
           "alias":"",
           "address":"",
           "dev_type":"",
+          "rotation":"",
           "bus":""
         }
       ]
@@ -125,11 +167,11 @@
     }
   ],
   "_comment_hw":" Hardware Information is complete",
-  "storage": [
+  "storage_profile": [
     {
-      "device_name": " ",
+      "name":"",
       "bootdrive":"",
-      "partitions": [
+      "bd_partitions": [
         {
           "name":"",
           "size":"",
@@ -140,14 +182,25 @@
             "mount_options":""
           }
         }  
+      ],
+      "data_devices": [
+        {
+          "name":""
+        }  
+      ],
+      "journal_devices": [
+        {
+          "name":""
+        }  
       ]
+      
     }
   ],
-  "_comment_nw": "Please include IPMI network info too",
+  "_comment_nw1": "L3 Network Info, Please include IPMI network info too",
   "networks": [
     {
-      "name":"",
-      "vip":"",
+      "name":"ipmi",
+      "vip":"192.168.20.0/24",
       "vlan":"",
       "mtu":"",
       "routedomain":"",
@@ -177,7 +230,22 @@
       ]
     }
   ],
-  "_comment2": "NICs that are not part of bond/bridge",
+  "_comment_nw2":" Layer-1 Network Info.",
+  "network_link": [
+    {
+      "bonding_mode":"",
+      "mtu":"",
+      "linkspeed":"auto",
+      "trunking_mode":"",
+      "trunking_default_nw":"",
+      "allowed_networks": [
+          {
+            "name":""
+          }
+        ]
+    }  
+  ],
+  "_comment_nw3": "interfaces: NICs that are not part of bond/bridge",
   "interfaces": [
     {
       "name":"",
@@ -209,16 +277,18 @@
       ]
     }  
   ],
+  "_comment_nw4": "The interface_name could be i/f, bond, bridges",
+  "_comment_nw5": "These profiles are mapped to roles",
   "interface_mapping_profiles": [
     {
-      "profile_name":"",
+      "profile_name":"a",
       "profile_data": [
         {
           "interface_name":"",
           "interface_type":"",
           "networks": [
             {
-              "name":""
+              "name":"a"
             }  
           ],
           "use_dhcp":""
@@ -229,19 +299,28 @@
   "platform_profiles": [
     {
       "profile_name":"",
-      "profile_info": [
-        {
-          "os":"",
-          "kernel_version":"",
-          "kernel_parameters":"",
-          "isolated_cpus":"",
-          "vnf_cores":"",
-          "os_reserved_cores": " ",
-          "ovs_reserved_cores": " "
-        }
-      ]
+      "os":"xenial",
+      "rt_kvm":"",
+      "kernel_version":"",
+      "kernel_parameters":"",
+      "isolated_cpus":"",
+      "vnf_cores":"",
+      "os_reserved_cores": " ",
+      "hugepage_count":"",
+      "hugepage_size":"",
+      "iommu":"",
+      "vswitch_daemon_cores": " ",
+      "vswitch_type":"",
+      "vswitch_uio_driver":"",
+      "vswitch_mem_channels":"",
+      "vswitch_socket_memory":"",
+      "vswitch_pmd_cores":"",
+      "vswitch_dpdk_lcores":"",
+      "vswitch_dpdk_rxqs":"",
+      "vswitch_options":""
     }
   ],
+  "_comment_sw1":"Software Begins",
   "undercloud_sw_profiles":[
     {
       "profile_name":"",
@@ -275,37 +354,53 @@
       ]
     }
   ],
-  "software_info": {
-    "undercloud_profile":"",
-    "infrasw_profile":"",
-    "openstack_profile":""
-  },
+  "software_set": [
+    {
+      "set_name":"",
+      "undercloud_profile":"",
+      "infrasw_profile":"",
+      "openstack_profile":""
+    }
+  ],
   "_comment_role1":"User has to configure this - What profile to use for a role",
   "_comment_role2":"Based on this server_info will be autogenerated for all servers",
   "roles": [
     {
-      "name":"",
-      "count":"",
-      "hardware_profile":"",
-      "interface_mapping_profile":"",
-      "storage_profile":"",
-      "platform_profile":"",
-      "rack_profile":""
+      "name":"a",
+      "count":"2",
+      "hardware_profile":"x",
+      "interface_mapping":"y",
+      "storage_mapping":"z",
+      "platform_profile":"q",
+      "sw_set_name":"w"
+    },
+    {
+      "name":"a1",
+      "count":"3",
+      "hardware_profile":"x1",
+      "interface_mapping":"y1",
+      "storage_mapping":"z1",
+      "platform_profile":"q1",
+      "sw_set_name":"w1"
     }
   ],
+  "_comment_ex1":"C:City, A:Area, R:Room, N:Unique Number",
+  "_comment_ex2":"All are 2 characters. City-Capitals, Area-Small",
+  "extrapolation_info": {
+    "ilo_password":"CID-AID-RID-NID",
+    "ilo_user":"owner",
+    "ip_increment":"2"
+  },
   "_comment_servers1":"This will be auto generated",
   "_comment_servers2":"This describes the entire cloud.",
   "servers": [
     {
-      "hardware_profile":"",
-      "interface_mapping_profile":"",
-      "storage_profile":"",
-      "platform_profile":"",
-      "rack_name":"",
+      "role_name":"",
       "device_name":"",
       "az_name": " ",
       "ha_name": " ",
-      "ipmi_info": {
+      "rack":"",
+      "ilo_info": {
         "ip":"",
         "user":"",
         "password":""

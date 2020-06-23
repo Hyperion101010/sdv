@@ -8,7 +8,7 @@ import yaml
 
 CWD = os.getcwd()
 
-class FindKey():
+class Validate():
     """Find Key Class"""
     def __init__(self, json_fn, yaml_fn, mapping_fn):
         self.yaml = dict()
@@ -39,19 +39,12 @@ class FindKey():
             print('Could not read json file')
 
     def read_mapping(self, mapping_fn):
-        """ read yaml file """
+        """ read json file """
         try:
-            with open(os.path.join(CWD, mapping_fn)) as mapping_file:
-                temp = mapping_file.read()
+            with open(os.path.join(CWD, mapping_fn)) as json_file:
+                self.mapping = json.loads(json_file.read())
         except IOError:
             print('Could not read mapping file')
-
-        # insert file contents into dict
-        temp = temp.split('\n')
-
-        for val in temp:
-            val = val.split(':')
-            self.mapping[val[0].strip()] = val[1].strip()
 
     def find_json_vals(self, key, temp_json):
         """ insert all matching json key-vals in array """
@@ -96,6 +89,7 @@ class FindKey():
         """ check if keys of json and yaml match """
         self.json_vals = []
         self.yaml_vals = []
+        string = ""
         present = self.find_json_vals(key, self.json)
 
         if present:
@@ -106,15 +100,12 @@ class FindKey():
             match = self.find_match(key, self.yaml)
 
             if match:
-                print('The json vals are:{} and yaml vals are:{}'.format(self.json_vals, self.yaml_vals))
-                print("key-value pairs of json and yaml match!")
+                string += 'The pdf key vals are:{} and installer key vals are:{}\n'.format(self.json_vals, self.yaml_vals)
+                string += "key-value pairs of pdf and installer match!\n"
             else:
-                print('The json vals are:{} and yaml vals are:{}'.format(self.json_vals, self.yaml_vals))
-                print("key-value pairs of json and yaml do not match")
+                string += 'The pdf key vals are:{} and installer key vals are:{}\n'.format(self.json_vals, self.yaml_vals)
+                string += "key-value pairs of pdf and installer do not match\n"
         else:
-            print('key not present in json')
-
-
-if __name__ == "__main__":
-    obj = FindKey('platform_description_18March2020.json', 'intel-pod10.yaml', 'mapping.txt')
-    obj.check_match('qemu')
+            string += 'key not present in pdf'
+        
+        return string

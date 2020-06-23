@@ -121,8 +121,3 @@ class Extrapolate():
         self.pd["servers"] = list_servers
         self.save_pd()
 
-
-
-if __name__ == "__main__":
-    obj = Extrapolate('platform_description_12May2020.json')
-    obj.extrapolate()
