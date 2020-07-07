@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>PDF</title>
+	
+   <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+   <meta content="utf-8" http-equiv="encoding">
+
+   <link rel="stylesheet" href="style/index.css">
+   <link rel="stylesheet" href="style/array.css">
+
+   <script src="mergeDeep.js"></script>
+   <script src="readFromHTML.js"></script>
+   <script src="writeToHTML.js"></script>
+   <script src="actions.js"></script>
+   <script src="controller.js"></script>
+   <script src="github-calls.js"></script>
+
+   <script src="import/lodash.min.js"></script>
+   <!--https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js-->
+
+   <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet"> 
+</head>
+<body onload="controllerLoop()">
+<div id="site"><form>
+		
+	<fieldset><legend>Site</legend>
+
+		<label>Site:</label>
+		<select id="sitename" name='site'>
+			<option value="pod10">Site 10</option>
+			<option value="pod15">Site 15</option>
+		</select>
+		<i class="select"></i>
+		<input type = "hidden" id= "sessionid" >
+	</fieldset>
+
+
+	<fieldset class='pdfData'>
+		<legend class="collapse-arrow expand-arrow" onclick="toggleClass(this,'expand-arrow')">
+		    Hardware
+	    </legend>
+	    <div>
+	        <div name="management_info">
+	        	<label>Owner:</label>
+	            <input type="text" name="owner" value="parth"><br>
+
+	            <label>Area Name:</label>
+	            <input type="text" name="area_name" value="Delhi"><br>
+
+	            <label>Area Center Name:</label>
+	            <input type="text" name="area_center_name" value="Delhi-F21"><br>
+
+	            <label>City:</label>
+	            <input type="text" name="city" value="Delhi"><br>
+
+	            <label>Resource Pool Name:</label>
+	            <input type="text" name="resource_pool_name" value="PR-42">
+	        </div>
+
+	        <br>
+
+	        <label>Racks:</label><br>
+	        <div class="arr" name="rack_info">
+	        	<label>Rack ID:</label>
+	        	<input type="text" name="rack_id" value="45"><br>
+
+	        	<div name="rack_details">
+	        		<label>Rack Name:</label>
+	        		<input type="text" name="rack_name" value="R-45"><br>
+
+	        		<label>Rack Description:</label>
+	        		<input type="text" name="rack_description" value="R-45 description">
+	        	</div>
+	        </div>
+	        <div class="add-button" onclick="duplicate(this)"></div>
+	    	
+	    </div>
+	    
+	</fieldset>
+
+
+	<fieldset class='pdfData'>
+		<legend class="collapse-arrow expand-arrow" onclick="toggleClass(this,'expand-arrow')">
+		    Software
+		</legend>
+	</fieldset>
+
+
+	<fieldset class='pdfData'>
+		<legend class="collapse-arrow expand-arrow" onclick="toggleClass(this,'expand-arrow')">
+		    Platform
+		</legend>
+	</fieldset>
+
+
+	<fieldset class='pdfData'>
+		<legend class="collapse-arrow expand-arrow" onclick="toggleClass(this,'expand-arrow')">
+		    Networks
+		</legend>
+	</fieldset>
+
+
+	<fieldset class='pdfData'>
+		<legend class="collapse-arrow expand-arrow" onclick="toggleClass(this,'expand-arrow')">
+		    Configuration
+		</legend>
+	</fieldset>
+
+
+	<fieldset class='pdfData'>
+		<legend class="collapse-arrow expand-arrow" onclick="toggleClass(this,'expand-arrow')">
+		    Mapping
+		</legend>
+	</fieldset>
+
+
+	<fieldset class='pdfData'>
+		<legend class="collapse-arrow expand-arrow" onclick="toggleClass(this,'expand-arrow')">
+		    Storage Cluster
+		</legend>
+	</fieldset>
+
+
+	<fieldset class='pdfData'>
+		<legend class="collapse-arrow expand-arrow" onclick="toggleClass(this,'expand-arrow')">
+		    Cloud info
+		</legend>
+	</fieldset>
+
+		
+
+</form>
+ <button id="save-changes" type="button" onclick="savePDF()">Save Changes</button>
+ <button id="delete" type="button" onclick="deletePDF()"> <img src="assets/trash-alt-regular.svg"> Delete</button>
+ <button id="reload" type="button" onclick="reloadPDF()"> <img src="assets/redo-alt-solid.svg">Reload</button> 
+
+
+</div>
+</body>
+</html>
