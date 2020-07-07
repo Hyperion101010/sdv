@@ -19,6 +19,41 @@ function cleanArrayValues(obj){
   }
 }
 
+function syncSiteList(){
+
+  var [sessionId, l] = getSession();
+  var sitelist = gListAllSite(sessionId);
+
+  var site = document.getElementById('sitename');
+  for (i = site.length - 1; i >= 0; i--) 
+    site.remove(i);
+
+  for(sitename of sitelist){
+    var newoption = document.createElement('option');
+    newoption.value = sitename;
+    newoption.appendChild( document.createTextNode(sitename) )
+    site.appendChild(newoption);
+  }
+
+}
+
+function loadNewDefaultPDF(){
+
+  var defaultPDF = '{ "management_info": { "owner":"New Name", "area_name": "New Area Name", \
+    "area_center_name": "New Center Name", \
+    "room_id": "New Room ID 5", "city": "New City Name", \
+    "resource_pool_name": "New resource Pool name" }, \
+  "rack_info": [ \
+    { "rack_id":"New Rack ID", \
+      "rack_details": { "rack_name":"New Rack Name", \
+        "rack_description":"New Rack Description" } }]}';
+
+  defaultPDF = JSON.parse(defaultPDF);
+
+  for(category of document.getElementsByClassName('pdfData'))
+      writeToHTML(category ,defaultPDF);
+}
+
 
 
 
@@ -27,6 +62,20 @@ function cleanArrayValues(obj){
 *** Program Control
 **********************/
 
+function addNewPDF(){
+    var sitename = prompt('Enter site name');
+
+    var [sessionId, l] = getSession();
+
+    if(sitename === null)
+        return;
+
+    gAddNewSite(sessionId, sitename);
+
+    syncSiteList();
+    document.getElementById('sitename').value = sitename;
+    loadNewDefaultPDF();
+}
 
 function reloadPDF(){
 
@@ -35,6 +84,7 @@ function reloadPDF(){
     if(!msg)
       return;
 
+    var [sessionId, sitename] = getSession();
     var pdf = JSON.parse( gGetPDF(sessionId, sitename));
 
     for(category of document.getElementsByClassName('pdfData'))
@@ -49,7 +99,10 @@ function deletePDF(){
   if(!msg)
     return;
 
+  var [sessionId, sitename] = getSession();
   gDeletePDF(sessionId, sitename);
+
+  window.location.href = '/site?session='+sessionId;
 
 }
 
@@ -116,7 +169,7 @@ function renewSession(){
 
   session = document.getElementById('sessionid');
   session.value = newsessionID;
-  
+
   setTimeout(renewSession, 4000); 
 }
 
@@ -125,7 +178,7 @@ function isValidSession(){
 
   var [sessionId, sitename] = getSession();
   if(!gCheckSession(sessionId)){
-    alert('Session token revoked! Login again')
+    alert('Invalid session! Login again')
     login();
     return false;
   }
@@ -134,14 +187,33 @@ function isValidSession(){
 
 
 function login(){
-
-  username= 'nfvid';
-  password='asdas';
-
-  sessionid = gAuthenticate(username, password);
+    window.location.href="/login"; 
+}
 
 
-  session = document.getElementById('sessionid');
-  session.value = sessionid;
+function loadpage(){
 
+  var urlParams = new URLSearchParams(window.location.search);
+  document.getElementById('sessionid').value = urlParams.get('session');
+
+  syncSiteList();
+  document.getElementById('sitename').selectedIndex = '0';
+
+  var [sessionId, sitename] = getSession();
+  var pdf = JSON.parse( gGetPDF(sessionId, sitename));
+
+  for(category of document.getElementsByClassName('pdfData'))
+       writeToHTML(category ,pdf);
+
+  renewSession();
+  controllerLoop();
+}
+
+function siteChanged(){
+  
+  var [sessionId, sitename] = getSession();
+  var pdf = JSON.parse( gGetPDF(sessionId, sitename));
+
+  for(category of document.getElementsByClassName('pdfData'))
+       writeToHTML(category ,pdf);
 }

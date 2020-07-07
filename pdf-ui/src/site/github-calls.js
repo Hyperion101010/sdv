@@ -1,9 +1,4 @@
 
-function gAuthenticate(username, password){
-    // authenticates and returns sessions id
-    return 419789456;
-}
-
 function gCheckSession(sessionId){
     //checks if session is valid?
     // return true/false
@@ -17,12 +12,29 @@ function gRenewSession(sessionid){
   
   if(!isValidSession())
     return;
-  else
+
   // if valid, then create new token ID(sessionid) and return
-  if(sessionId==419789456)
+  if(sessionid==419789456)
       return 419789456;
   // if not valid, then return 0
       return 0;
+}
+
+function gListAllSite(sessionid){
+  
+  if(!isValidSession())
+    return;
+
+  return ['pod10', 'pod15', 'pod17', 'pod18'];
+}
+
+function gAddNewSite(sessionid, sitename){
+
+  if(!isValidSession())
+    return;
+
+  //add new site with name sitename
+
 }
 
 function gGetPDF(sessionid, sitename){
@@ -30,8 +42,7 @@ function gGetPDF(sessionid, sitename){
   if(!isValidSession())
     return;
 
-  var pdf = '{ \
-  "_comment_head1":"User should Configure all profiles. Add new, if reqd.", \
+  var pdf = '{"_comment_head1":"User should Configure all profiles. Add new, if reqd.", \
   "_comment_head2":"User should Configure the roles", \
   "_comment_head3":"All infos should be filled by the user", \
   "_comment_head4":"The servers data will be automatically generated", \

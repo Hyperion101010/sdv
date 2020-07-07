@@ -21,18 +21,19 @@
 
    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet"> 
 </head>
-<body onload="controllerLoop()">
+<body onload="loadpage()">
 <div id="site"><form>
 		
 	<fieldset><legend>Site</legend>
 
 		<label>Site:</label>
-		<select id="sitename" name='site'>
+		<select id="sitename" onchange="siteChanged()" name='site'>
 			<option value="pod10">Site 10</option>
 			<option value="pod15">Site 15</option>
 		</select>
 		<i class="select"></i>
 		<input type = "hidden" id= "sessionid" >
+		<div class="add-new" onclick="addNewPDF()">Add new <img src="assets/plus-square-regular.svg"></div>
 	</fieldset>
 
 
