@@ -112,12 +112,12 @@
       "profile_info": [
         {
           "numa_id": "",
-          "cpus":"",
+          "cpus":"16",
           "cpu_cflags":"",
-          "speed": "",
-          "cache_size":"",
-          "model":"",
-          "architecture":""
+          "speed": "3.6 GHz",
+          "cache_size":"8.25 MB L3",
+          "model":"Intel® Xeon® Scalable 3100 series",
+          "architecture":"x86"
         }
       ]
     }
@@ -127,11 +127,18 @@
       "profile_name":"",
       "profile_info": [
         {
-          "alias":"",
-          "address":"",
-          "dev_type":"",
+          "alias":"bootdisk",
+          "address":"0:0.0.0",
+          "dev_type":"ST3000NM0033-9ZM",
           "rotation":"",
-          "bus":""
+          "bus":"scsi"
+        },
+        {
+          "alias":"datadisk",
+          "address":"1:0.0.0",
+          "dev_type":"SSDSC2BW18",
+          "rotation":"",
+          "bus":"scsi"
         }
       ]
     }
@@ -143,7 +150,7 @@
         {
           "alias":"",
           "address":"",
-          "dev_type":"",
+          "dev_type":"HPE 1 Gb 331i Ethernet adapter 4-ports per controller and/or optional FlexibleLOM",
           "bus":"",
           "sriov_capable":"",
           "numa_id":""
@@ -153,14 +160,14 @@
   ],
   "hardware_profiles": [
     {
-      "profile_name": "",
+      "profile_name": "HPE DL360",
       "profile_info": {
-        "manufacturer": "",
-        "model": "",
-        "generation":"",
+        "manufacturer": "HP",
+        "model": "DL 360",
+        "generation":"Gen10",
         "bios_profile":"",
         "processor_profile": "",
-        "memory": "",
+        "memory": "3TB",
         "disks_profile": "",
         "nics_profile":""
       }
