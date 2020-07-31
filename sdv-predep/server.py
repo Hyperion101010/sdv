@@ -15,7 +15,7 @@ import tornado.web
 import tornado.log
 
 from extrapolation import Extrapolate
-from validation import Validate
+from validation.Validate import Validate
 
 class ValidateJson(RequestHandler):
 
