@@ -10,25 +10,30 @@ CWD = os.getcwd()
 
 class Validate():
     """Find Key Class"""
-    def __init__(self, json_fn, yaml_fn, mapping_fn):
+    def __init__(self, json_fn, yaml_dir, mapping_fn):
         self.yaml = dict()
         self.json = dict()
         self.mapping = dict()
 
-        self.read_yaml(yaml_fn)
+        self.read_yaml(yaml_dir)
         self.read_json(json_fn)
         self.read_mapping(mapping_fn)
 
         self.json_vals = []
         self.yaml_vals = []
 
-    def read_yaml(self, yaml_fn):
+    def read_yaml(self, yaml_dir):
         """ read yaml file """
-        try:
-            with open(os.path.join(CWD, yaml_fn)) as yaml_file:
-                self.yaml = yaml.load(yaml_file, Loader=yaml.FullLoader)
-        except IOError:
-            print('Could not read yaml file')
+        yaml_files = [pos_json for pos_json in os.listdir(yaml_dir) if pos_json.endswith('.json')]
+
+        for yaml in yaml_files:
+            try:
+                with open(os.path.join(CWD, yaml_fn)) as yaml_file:
+                    temp = yaml.load(yaml_file, Loader=yaml.FullLoader)
+            except IOError:
+                print('Could not read yaml file')
+            
+            self.yaml[temp["some_key"]] = temp
 
     def read_json(self, json_fn):
         """ read json file """

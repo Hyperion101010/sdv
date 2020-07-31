@@ -33,6 +33,9 @@ Sample pdf file is located in data directory.
 
 To do a validation POST request, use following command
 ```
-curl --header "Content-Type: application/json"   --request POST   --data '{"pdf_fn":"<>", "inst_fn":"<>", "map_fn":"<>", "key":"<>"}'   http://localhost:8888/validate
+curl --header "Content-Type: application/json"   --request POST   --data '{"pdf_file":"<>", "manifest_dir":"<>", "installer":"<>"}'   http://localhost:8888/validate
 ```
-Sample pdf file, installer file and mapping file is located in data directory.
+Sample pdf file(json), and installer file(yaml) is located in sdv-predep/data directory.
+Mapping files are found in sdv-predep/mapping directory. There exist mapping for 2 installers currently ( Airship & TripleO).
+The validation files are found is sdv-predep/validation directory. And the extrapolation files in sdv-predep/extrapolation directory.
+

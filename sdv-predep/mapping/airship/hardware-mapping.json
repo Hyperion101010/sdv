@@ -1,17 +1,21 @@
 {
     "control-bios_profile-bios_version":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"bios_version"
     },
     "control-bios_profile-bios_mode":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"boot_mode"
     },
     "control-bios_profile-bootstrap_proto":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"bootstrap_protocol"
+    },
+    "control-bios_profile-bios_setting":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "control-bios_profile-bios_setting":{
+    "control-bios_profile-hyperthreading_enabled":{
         "manifest_context":"",
         "manifest_key":""
     },
@@ -43,37 +47,53 @@
         "manifest_context":"",
         "manifest_key":""
     },
-    "control-disk_profiles-address":{
+    "control-disks_profiles-address":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"address"
+    },
+    "control-disks_profiles-alias":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "control-disk_profiles-alias":{
+    "control-disks_profiles-dev_type":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"dev_type"
+    },
+    "control-disks_profiles-vendor":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "control-disk_profiles-dev_type":{
+    "control-disks_profiles-size":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "control-disk_profiles-rotation":{
+    "control-disks_profiles-model":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "control-disk_profiles-bus":{
+    "control-disks_profiles-logical_name":{
+        "manifest_context":"",
+        "manifest_key":""
+    },
+    "control-disks_profiles-rotation":{
+        "manifest_context":"",
+        "manifest_key":""
+    },
+    "control-disks_profiles-bus":{
         "manifest_context":"",
         "manifest_key":""
     },
     "control-nic_profiles-address":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"address"
     },
     "control-nic_profiles-dev_type":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"dev_type"
     },
     "control-nic_profiles-bus":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"bus_type"
     },
     "control-nic_profiles-sriov_capable":{
         "manifest_context":"",
@@ -92,8 +112,8 @@
         "manifest_key":""
     },
     "control-hardware_profiles-generation":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"generation"
     },
     "control-hardware_profiles-bios_profile":{
         "manifest_context":"",
@@ -104,8 +124,12 @@
         "manifest_key":""
     },
     "control-hardware_profiles-memory":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"memory"
+    },
+    "control-hardware_profiles-manufacturer":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"vendor"
     },
     "control-hardware_profiles-disk_profile":{
         "manifest_context":"",
@@ -116,18 +140,22 @@
         "manifest_key":""
     },
     "compute-bios_profile-bios_version":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"bios_version"
     },
     "compute-bios_profile-bios_mode":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"boot_mode"
     },
     "compute-bios_profile-bootstrap_proto":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"bootstrap_protocol"
+    },
+    "compute-bios_profile-bios_setting":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "compute-bios_profile-bios_setting":{
+    "compute-bios_profile-hyperthreading_enabled":{
         "manifest_context":"",
         "manifest_key":""
     },
@@ -159,37 +187,53 @@
         "manifest_context":"",
         "manifest_key":""
     },
-    "compute-disk_profiles-address":{
+    "compute-disks_profiles-address":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"address"
+    },
+    "compute-disks_profiles-alias":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "compute-disk_profiles-alias":{
+    "compute-disks_profiles-dev_type":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"dev_type"
+    },
+    "compute-disks_profiles-vendor":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "compute-disk_profiles-dev_type":{
+    "compute-disks_profiles-size":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "compute-disk_profiles-rotation":{
+    "compute-disks_profiles-model":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "compute-disk_profiles-bus":{
+    "compute-disks_profiles-logical_name":{
+        "manifest_context":"",
+        "manifest_key":""
+    },
+    "compute-disks_profiles-rotation":{
+        "manifest_context":"",
+        "manifest_key":""
+    },
+    "compute-disks_profiles-bus":{
         "manifest_context":"",
         "manifest_key":""
     },
     "compute-nic_profiles-address":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"address"
     },
     "compute-nic_profiles-dev_type":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"dev_type"
     },
     "compute-nic_profiles-bus":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"bus_type"
     },
     "compute-nic_profiles-sriov_capable":{
         "manifest_context":"",
@@ -208,8 +252,8 @@
         "manifest_key":""
     },
     "compute-hardware_profiles-generation":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"generation"
     },
     "compute-hardware_profiles-bios_profile":{
         "manifest_context":"",
@@ -220,8 +264,12 @@
         "manifest_key":""
     },
     "compute-hardware_profiles-memory":{
-        "manifest_context":"",
-        "manifest_key":""
+        "manifest_context":"intel-pod10",
+        "manifest_key":"memory"
+    },
+    "compute-hardware_profiles-manufacturer":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"vendor"
     },
     "compute-hardware_profiles-disk_profile":{
         "manifest_context":"",
@@ -231,119 +279,143 @@
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-bios_profile-bios_version":{
+    "data-bios_profile-bios_version":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"bios_version"
+    },
+    "data-bios_profile-bios_mode":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"boot_mode"
+    },
+    "data-bios_profile-bootstrap_proto":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"bootstrap_protocol"
+    },
+    "data-bios_profile-bios_setting":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-bios_profile-bios_mode":{
+    "data-bios_profile-hyperthreading_enabled":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-bios_profile-bootstrap_proto":{
+    "data-processor_profiles-numa_id":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-bios_profile-bios_setting":{
+    "data-processor_profiles-cpus":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-processor_profiles-numa_id":{
+    "data-processor_profiles-cpu_cflags":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-processor_profiles-cpus":{
+    "data-processor_profiles-speed":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-processor_profiles-cpu_cflags":{
+    "data-processor_profiles-cache_size":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-processor_profiles-speed":{
+    "data-processor_profiles-model":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-processor_profiles-cache_size":{
+    "data-processor_profiles-architecture":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-processor_profiles-model":{
+    "data-disks_profiles-address":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"address"
+    },
+    "data-disks_profiles-alias":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-processor_profiles-architecture":{
+    "data-disks_profiles-dev_type":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"dev_type"
+    },
+    "data-disks_profiles-vendor":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-disk_profiles-address":{
+    "data-disks_profiles-size":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-disk_profiles-alias":{
+    "data-disks_profiles-model":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-disk_profiles-dev_type":{
+    "data-disks_profiles-logical_name":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-disk_profiles-rotation":{
+    "data-disks_profiles-rotation":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-disk_profiles-bus":{
+    "data-disks_profiles-bus":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-nic_profiles-address":{
+    "data-nic_profiles-address":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"address"
+    },
+    "data-nic_profiles-dev_type":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"dev_type"
+    },
+    "data-nic_profiles-bus":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"bus_type"
+    },
+    "data-nic_profiles-sriov_capable":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-nic_profiles-dev_type":{
+    "data-nic_profiles-numa_id":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-nic_profiles-bus":{
+    "data-hardware_profiles-maufacturer":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-nic_profiles-sriov_capable":{
+    "data-hardware_profiles-model":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-nic_profiles-numa_id":{
+    "data-hardware_profiles-generation":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"generation"
+    },
+    "data-hardware_profiles-bios_profile":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-hardware_profiles-maufacturer":{
+    "data-hardware_profiles-processor_profile":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-hardware_profiles-model":{
+    "data-hardware_profiles-memory":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"memory"
+    },
+    "data-hardware_profiles-manufacturer":{
+        "manifest_context":"intel-pod10",
+        "manifest_key":"vendor"
+    },
+    "data-hardware_profiles-disk_profile":{
         "manifest_context":"",
         "manifest_key":""
     },
-    "storage-hardware_profiles-generation":{
-        "manifest_context":"",
-        "manifest_key":""
-    },
-    "storage-hardware_profiles-bios_profile":{
-        "manifest_context":"",
-        "manifest_key":""
-    },
-    "storage-hardware_profiles-processor_profile":{
-        "manifest_context":"",
-        "manifest_key":""
-    },
-    "storage-hardware_profiles-memory":{
-        "manifest_context":"",
-        "manifest_key":""
-    },
-    "storage-hardware_profiles-disk_profile":{
-        "manifest_context":"",
-        "manifest_key":""
-    },
-    "storage-hardware_profiles-nics_profile":{
+    "data-hardware_profiles-nics_profile":{
         "manifest_context":"",
         "manifest_key":""
     }
