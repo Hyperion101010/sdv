@@ -27,15 +27,21 @@ Currently there exists two functionalities, extrapolation and validation.
 
 To do a extrapolate POST request, use following command
 ```
-curl --header "Content-Type: application/json"   --request POST   --data '{"pdf_fn":"<>"}'   http://localhost:8888/extrapolate
+curl --header "Content-Type: application/json"   --request POST   --data '{"pdf_fn":"<>", "store_at":"<>"}'   http://localhost:8888/extrapolate
 ```
 Sample pdf file is located in data directory.
+The pdf_fn key expects absolute filepath to pdf.
+the store_at key expects absolute filepath to which the new generated pdf should be stored at.
 
 To do a validation POST request, use following command
 ```
-curl --header "Content-Type: application/json"   --request POST   --data '{"pdf_file":"<>", "manifest_dir":"<>", "installer":"<>"}'   http://localhost:8888/validate
+curl --header "Content-Type: application/json"   --request POST   --data '{"pdf_file":"<>", "inst_dir":"<>", "inst_type":"<>"}'   http://localhost:8888/validate
 ```
 Sample pdf file(json), and installer file(yaml) is located in sdv-predep/data directory.
+The pdf_file key expects absolute filepath to pdf.
+The inst_dir key expects absolute filepath to installer directory.
+The inst_type key expects installer type string ("airship", "tripleo", etc.)
+
 Mapping files are found in sdv-predep/mapping directory. There exist mapping for 2 installers currently ( Airship & TripleO).
 The validation files are found is sdv-predep/validation directory. And the extrapolation files in sdv-predep/extrapolation directory.
 
