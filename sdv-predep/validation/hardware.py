@@ -1,35 +1,44 @@
+#!/usr/bin/env python
+
+# pylint: disable=line-too-long, invalid-name, broad-except, too-many-instance-attributes, too-many-arguments
+
+""" program which validates hardware profile """
+
 class HardwareValidation():
     """ perform hardware validation """
-    def __init__(self, role, json, value, manifest):
+    def __init__(self, role, json, value, manifest, logger):
         self.role = role
         self.json = json
         self.value = value
+        self.logger = logger
 
         self.right = 0
         self.wrong = 0
         self.total = 0
+        self.result = ""
 
         self.manifest = manifest
 
         self.validate_hardware()
-    
-    def get_values(self):
-        return self.right, self.wrong, self.total
-    
-    def comparison(self, key, profile, pdf_val, man_val):
 
+    def get_values(self):
+        """ return set of right wrong and total """
+        return self.right, self.wrong, self.total, self.result
+
+    def comparison(self, key, profile, pdf_val, man_val):
+        """ do comparison and print results"""
         self.total += 1
 
         if pdf_val == "":
-            print("No value exists for pdf-key:{} of profile:{} and role:{}".format(key, profile, self.role))
-        elif man_val == "" or man_val == None:
-            print("No value exists for manifest-key:{} of profile:{} and role:{}".format(key, profile, self.role))
+            self.result += ("No value exists for pdf-key:{} of profile:{} and role:{}\n".format(key, profile, self.role))
+        elif man_val == []:
+            self.result += ("No value exists for manifest-key:{} of profile:{} and role:{}\n".format(key, profile, self.role))
         elif pdf_val not in man_val:
-            print("The pdf and manifest values do not match for key:{} profile:{} role:{}".format(key, profile, self.role))
-            print("the pdf val:{} and manifest val:{}".format(pdf_val, man_val))
+            self.result += ("The pdf and manifest values do not match for key:{} profile:{} role:{}\n".format(key, profile, self.role))
+            self.result += ("the pdf val:{} and manifest val:{}\n".format(pdf_val, man_val))
             self.wrong += 1
         else:
-            print("The pdf and manifest values do match for key:{} profile:{} role:{}".format(key, profile, self.role))
+            self.result += ("The pdf and manifest values do match for key:{} profile:{} role:{}\n".format(key, profile, self.role))
             self.right += 1
 
     def validate_bios_profile(self, value):
@@ -38,35 +47,48 @@ class HardwareValidation():
         profile = 'bios_profile'
         keys = ['bios_version', 'bios_mode', 'bootstrap_proto', 'hyperthreading_enabled', 'bios_setting']
 
+        self.logger.info("Starting with the validation of bios profile name:%s", value)
+
         for key in self.json[profile]:
             if key["profile_name"] == value:
                 val = key
                 break
-        
-        # print(val)
-        for key in keys:
-            temp1 = val[key]
-            temp2 = self.manifest.find_val(self.role, profile, key)
-            self.comparison(key, profile, temp1, temp2)
-    
+
+        if val == "":
+            self.logger.error("Not able to find bios profile name: %s", value)
+        else:
+            for key in keys:
+                try:
+                    temp1 = val[key]
+                    temp2 = self.manifest.find_val(self.role, profile, key)
+                    self.comparison(key, profile, temp1, temp2)
+                except Exception:
+                    self.logger.error("Not able to find key: %s in bios profile: %s", key, value)
+
     def validate_processor_profile(self, value):
         """ validate processor profile """
         val = ""
         profile = 'processor_profiles'
         keys = ['speed', 'model', 'architecture']
 
+        self.logger.info("Starting with the validation of processor profile:%s", value)
+
         for key in self.json[profile]:
             if key["profile_name"] == self.value:
                 val = key
                 break
-        
-        # print(val)
-        val = val["profile_info"]
 
-        for key in keys:
-            temp1 = val[key]
-            temp2 = self.manifest.find_val(self.role, profile, key)
-            self.comparison(key, profile, temp1, temp2)
+        if val == "":
+            self.logger.error("Not able to find processor profile name: %s", value)
+        else:
+            val = val["profile_info"]
+            for key in keys:
+                try:
+                    temp1 = val[key]
+                    temp2 = self.manifest.find_val(self.role, profile, key)
+                    self.comparison(key, profile, temp1, temp2)
+                except Exception:
+                    self.logger.error("Not able to find key: %s in processor profile: %s", key, value)
 
     def validate_disks_profile(self, value):
         """ validate disks profile """
@@ -74,19 +96,25 @@ class HardwareValidation():
         profile = 'disks_profiles'
         keys = ['address', 'dev_type', 'rotation', 'bus']
 
+        self.logger.info("Starting with the validation of disks profile:%s", value)
+
         for key in self.json[profile]:
             if key["profile_name"] == self.value:
                 val = key
                 break
-        
-        # print(val)
-        val = val["profile_info"]
 
-        for vals in val:
-            for key in keys:
-                temp1 = vals[key]
-                temp2 = self.manifest.find_val(self.role, profile, key)
-                self.comparison(key, profile, temp1, temp2)
+        if val == "":
+            self.logger.error("Not able to find disk profile name: %s", value)
+        else:
+            val = val["profile_info"]
+            for vals in val:
+                for key in keys:
+                    try:
+                        temp1 = vals[key]
+                        temp2 = self.manifest.find_val(self.role, profile, key)
+                        self.comparison(key, profile, temp1, temp2)
+                    except Exception:
+                        self.logger.error("Not able to find key: %s in disk profile: %s", key, value)
 
     def validate_nic_profile(self, value):
         """ validate nic profile """
@@ -94,18 +122,26 @@ class HardwareValidation():
         profile = 'nic_profiles'
         keys = ['address', 'dev_type', 'bus', 'sriov_capable', 'numa_id']
 
+        self.logger.info("Starting with the validation of nic profile:%s", value)
+
         for key in self.json[profile]:
             if key["profile_name"] == self.value:
                 val = key
                 break
-        
-        val = val["profile_info"]
 
-        for vals in val:
-            for key in keys:
-                temp1 = vals[key]
-                temp2 = self.manifest.find_val(self.role, profile, key)
-                self.comparison(key, profile, temp1, temp2)
+        if val == "":
+            self.logger.error("Not able to find nic profile name: %s", value)
+        else:
+            val = val["profile_info"]
+
+            for vals in val:
+                for key in keys:
+                    try:
+                        temp1 = vals[key]
+                        temp2 = self.manifest.find_val(self.role, profile, key)
+                        self.comparison(key, profile, temp1, temp2)
+                    except Exception:
+                        self.logger.error("Not able to find key: %s in nic profile: %s", key, value)
 
     def validate_hardware(self):
         """ validate hardware """
@@ -114,22 +150,27 @@ class HardwareValidation():
         profile = 'hardware_profiles'
         keys = ['manufacturer', 'model', 'generation', 'memory']
 
+        self.logger.info("Starting with the validation of hardware profile:%s", self.value)
+
         for key in self.json[profile]:
             if key["profile_name"] == self.value:
                 val = key
                 break
-        
-        # print(val)
-        val = val["profile_info"]
 
-        for key in keys:
-            temp1 = val[key]
-            temp2 = self.manifest.find_val(self.role, profile, key)
-            self.comparison(key, profile, temp1, temp2)
+        if val == "":
+            self.logger.error("Not able to find hardware profile name: %s", self.value)
+        else:
+            val = val["profile_info"]
 
-        # print(val["bios_profile"])
+            for key in keys:
+                try:
+                    temp1 = val[key]
+                    temp2 = self.manifest.find_val(self.role, profile, key)
+                    self.comparison(key, profile, temp1, temp2)
+                except Exception:
+                    self.logger.error("Not able to find key: %s in hardware profile: %s", key, self.value)
+
         self.validate_bios_profile(val["bios_profile"])
         self.validate_processor_profile(val["processor_profile"])
         self.validate_disks_profile(val["disks_profile"])
         self.validate_nic_profile(val["nics_profile"])
-    

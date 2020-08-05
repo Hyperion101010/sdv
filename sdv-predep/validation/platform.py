@@ -1,60 +1,75 @@
+#!/usr/bin/env python
+
+# pylint: disable= line-too-long, invalid-name, broad-except, too-many-instance-attributes, too-many-arguments, too-many-branches
+
+""" program which validates platform profile """
+
 class PlatformValidation():
     """ perform hardware validation """
-    def __init__(self, role, json, value, manifest):
+    def __init__(self, role, json, value, manifest, logger):
         self.role = role
         self.json = json
         self.value = value
+        self.logger = logger
 
         self.right = 0
         self.wrong = 0
         self.total = 0
-        
+        self.result = ""
+
         self.manifest = manifest
 
         self.validate()
-    
-    def get_values(self):
-        return self.right, self.wrong, self.total
-    
-    def comparison(self, key, profile, pdf_val, man_val):
 
+    def get_values(self):
+        """ return set of right wrong and total """
+        return self.right, self.wrong, self.total, self.result
+
+    def comparison(self, key, profile, pdf_val, man_val):
+        """ do comparison and print results"""
         self.total += 1
 
         if pdf_val == "":
-            print("No value exists for pdf-key:{} of profile:{} and role:{}".format(key, profile, self.role))
-        elif man_val == "" or man_val == None:
-            print("No value exists for manifest-key:{} of profile:{} and role:{}".format(key, profile, self.role))
+            self.result += ("No value exists for pdf-key:{} of profile:{} and role:{}\n".format(key, profile, self.role))
+        elif man_val == []:
+            self.result += ("No value exists for manifest-key:{} of profile:{} and role:{}\n".format(key, profile, self.role))
         elif pdf_val not in man_val:
-            print("The pdf and manifest values do not match for key:{} profile:{} role:{}".format(key, profile, self.role))
-            print("the pdf val:{} and manifest val:{}".format(pdf_val, man_val))
+            self.result += ("The pdf and manifest values do not match for key:{} profile:{} role:{}\n".format(key, profile, self.role))
+            self.result += ("the pdf val:{} and manifest val:{}\n".format(pdf_val, man_val))
             self.wrong += 1
         else:
-            print("The pdf and manifest values do match for key:{} profile:{} role:{}".format(key, profile, self.role))
+            self.result += ("The pdf and manifest values do match for key:{} profile:{} role:{}\n".format(key, profile, self.role))
             self.right += 1
-    
+
     def validate(self):
         """ validate platform profile """
         val = ""
         profile = 'platform_profiles'
-        keys = ['os', 'rt_kvm', 'kernel_version', 'kernel_parameters', 'isolated_cpus', 
+        keys = ['os', 'rt_kvm', 'kernel_version', 'kernel_parameters', 'isolated_cpus',
                 'vnf_cores',
-                'iommu', 'vswitch_daemon_cores', 'vswitch_type', 'vswitch_uio_driver', 
-                'vswitch_mem_channels', 'vswitch_socket_memory', 'vswitch_pmd_cores', 
+                'iommu', 'vswitch_daemon_cores', 'vswitch_type', 'vswitch_uio_driver',
+                'vswitch_mem_channels', 'vswitch_socket_memory', 'vswitch_pmd_cores',
                 'vswitch_dpdk_lcores', 'vswitch_dpdk_rxqs', 'vswitch_options']
 
         for key in self.json[profile]:
             if key["profile_name"] == self.value:
                 val = key
                 break
-        
-        for key in keys:
-            temp1 = val[key]
-            temp2 = self.manifest.find_val(self.role, profile, key)
-            self.comparison(key, profile, temp1, temp2)
-        
-        key = ["hugepage_count", "hugepage_size"]
-        
-        for key in keys:
-            temp1 = val[key]
-            temp2 = self.manifest.find_val(self.role, profile, key)
-            self.comparison(key, profile, temp1, temp2)
+
+        if val == "":
+            self.logger.error("Not able to find platform profile name: %s", self.value)
+        else:
+            for key in keys:
+                try:
+                    temp1 = val[key]
+                    temp2 = self.manifest.find_val(self.role, profile, key)
+                    self.comparison(key, profile, temp1, temp2)
+                except Exception:
+                    self.logger.error("Not able to find key: %s in platform profile: %s", key, self.value)
+
+            # key = ["hugepage_count", "hugepage_size"]
+
+            # for key in keys:
+            #     temp1 = val[key]
+            #     temp2 = self.manifest.find_val(self.role, profile, key)
+            #     self.comparison(key, profile, temp1, temp2)

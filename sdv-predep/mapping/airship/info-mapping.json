@@ -71,6 +71,10 @@
         "manifest_context":"",
         "manifest_key":""
     },
+    "norole-vim_info-vim_name":{
+        "manifest_context":"",
+        "manifest_key":""
+    },
     "norole-vim_info-vim_id":{
         "manifest_context":"",
         "manifest_key":""
@@ -148,6 +152,30 @@
         "manifest_key":""
     },
     "norole-deployment_info-cpu_allocation_ratio":{
+        "manifest_context":"",
+        "manifest_key":""
+    },
+    "norole-deployment_info-high_availability":{
+        "manifest_context":"",
+        "manifest_key":""
+    },
+    "norole-deployment_info-sdn_controller":{
+        "manifest_context":"",
+        "manifest_key":""
+    },
+    "norole-deployment_info-sdn_controller_version":{
+        "manifest_context":"",
+        "manifest_key":""
+    },
+    "norole-deployment_info-sdn_controller_nbapps":{
+        "manifest_context":"",
+        "manifest_key":""
+    },
+    "norole-deployment_info-ironic_deploy_interface":{
+        "manifest_context":"",
+        "manifest_key":""
+    },
+    "norole-deployment_info-bl_str_connect_method":{
         "manifest_context":"",
         "manifest_key":""
     },

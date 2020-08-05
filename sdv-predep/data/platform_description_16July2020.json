@@ -583,176 +583,30 @@
       "type":"vlan"
     }
   ],
-  "_comment_nw2":" User to choose either to define {Network links} or {interface, bridges and bonds}",
+  "_comment_nw2":" type: trunk (airship), bond, interface, bridge",
   "network_link": [
-    {
-      "name":"oob",
-      "bonding_mode":"disabled",
-      "mtu":"",
-      "linkspeed":"auto",
-      "trunking_mode":"",
-      "trunking_default_nw":"oob",
-      "allowed_networks": [
-          {
-            "name":"oob"
-          }
-      ],
-      "metadata": [
-        {
-          "key":"noconfig",
-          "value":"enabled"
-        }  
-      ],
-      "slaves": [
-        {
-          "name":""
-        }  
-      ]
-    },
-    {
-      "name":"dmz",
-      "bonding_mode":"disabled",
-      "mtu":"1500",
-      "linkspeed":"auto",
-      "trunking_mode":"disabled",
-      "trunking_default_nw":"dmz",
-      "allowed_networks": [
-          {
-            "name":"dmz"
-          }
-      ],
-      "metadata": [
-        {
-          "key":"",
-          "value":""
-        }  
-      ],
-      "slaves": [
-        {
-          "name":"ctrl_nic1"
-        }  
-      ]
-    },
-    {
-      "name":"admin",
-      "bonding_mode":"disabled",
-      "mtu":"1500",
-      "linkspeed":"auto",
-      "trunking_mode":"disabled",
-      "trunking_default_nw":"admin",
-      "allowed_networks": [
-          {
-            "name":"admin"
-          }
-      ],
-      "metadata": [
-        {
-          "key":"",
-          "value":""
-        }  
-      ],
-      "slaves": [
-        {
-          "name":"ctrl_nic2"
-        }  
-      ]
-    },
-    {
-      "name":"data1",
-      "bonding_mode":"disabled",
-      "mtu":"1500",
-      "linkspeed":"auto",
-      "trunking_mode":"802.1q",
-      "trunking_default_nw":"",
-      "allowed_networks": [
-          {
-            "name":"private"
-          },
-          {
-            "name":"management"
-          }
-      ],
-      "metadata": [
-        {
-          "key":"",
-          "value":""
-        }  
-      ],
-      "slaves": [
-        {
-          "name":"data_nic1"
-        }  
-      ]
-    },
-    {
-      "name":"data2",
-      "bonding_mode":"disabled",
-      "mtu":"1500",
-      "linkspeed":"auto",
-      "trunking_mode":"802.1q",
-      "trunking_default_nw":"storage",
-      "allowed_networks": [
-          {
-            "name":"storage"
-          },
-          {
-            "name":"public"
-          }
-      ],
-      "metadata": [
-        {
-          "key":"",
-          "value":""
-        }  
-      ],
-      "slaves": [
-        {
-          "name":"data_nic2"
-        }  
-      ]
-    }
-  ],
-  "_comment_nw3": "interfaces: NICs that are not part of bond/bridge",
-  "interfaces": [
-    {
-      "name":"eno4.1103",
-      "type":"vlan",
-      "vid":"1103",
-      "mtu":"1500",
-      "vf_count":""
-    },
-    {
-      "name":"eno4",
-      "type":"sriov",
-      "vid":"",
-      "mtu":"1500",
-      "vf_count":"32"
-    }
-  ],
-  "bonds": [
     {
       "name":"",
       "type":"",
+      "bonding_mode":"",
       "mtu":"",
-      "mode":"",
-      "members": [
+      "linkspeed":"auto",
+      "trunking_mode":"",
+      "trunking_default_nw":"",
+      "metadata": [
         {
-          "interface_name":""
-        }  
-      ] 
-    }  
-  ],
-  "bridges": [
-    {
-      "name":"br-ex",
-      "type":"ovs",
-      "mtu":"1500",
-      "members": [
+          "key":"",
+          "value":""
+        }
+      ],
+      "members":[
         {
-          "member_name":"eno4.1103",
-          "member_type":"iface"
-        }  
-      ]
+          "name":"",
+          "type":""
+        }
+      ],
+      "vid":"",
+      "vf_count":""
     }  
   ],
   "_comment_nw4": "The interface_name could be links, i/f, bond, bridges",
@@ -1028,7 +882,7 @@
   "extrapolation_info": {
     "ilo_password":"CID-AID-RID-NID",
     "ilo_user":"owner",
-    "ip_increment":""
+    "ip_increment":"3"
   },
   "host_aggregates": [
     {
