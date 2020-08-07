@@ -8,6 +8,8 @@ import pwd
 import os
 import configparser
 
+from stat import S_IROTH,S_IWGRP,S_IWOTH,S_IXGRP,S_IXUSR, S_IXOTH
+
 ['DEFAULT']
 
 def check_neutron_hardening():
@@ -27,7 +29,7 @@ def check_neutron_hardening():
     if (not config['DEFAULT']['use_ssl']):
         print('SSL is not used')
         return False
-    if(not config['DEFAULT']['auth_strategy'] != 'keystone')
+    if(not config['DEFAULT']['auth_strategy'] != 'keystone'):
         print('Authentication strategy should be keystone')
         return False
 
@@ -60,24 +62,81 @@ def check_cinder_hardening():
     if(config['DEFAULT']['nas_secure_file_permissions'] != 'auto'):
         print('NAS secure file permissions')
         return False
-    if(!config['DEFAULT']['auth_strategy'] != 'keystone')
+    if(config['DEFAULT']['auth_strategy'] != 'keystone'):
         print('Authentication strategy should be keystone')
         return False
     if (config['DEFAULT']['glance_api_insecure']):
         print('Cinder-Glance API is insecure')
         return False
     if (config['DEFAULT']['osapi_max_request_body_size'] != 114688 or
-        config['oslo_middleware']['max_request_body_size'] != 114688)
+        config['oslo_middleware']['max_request_body_size'] != 114688):
         print('MAX Request Body Size is not 114688')
         return False
 
 def check_horizon_hardening():
-
+    config = configparser.ConfigParser()
+    config.read('/var/lib/config-data/puppet-generated/horizon/openstack-dashboard/local_settings.py')
+    file_name = 'local_settings.py'
+    stat_info = os.stat('/var/lib/config-data/puppet-generated/horizon/openstack-dashboard/local_settings.py')
+    if (pwd.getpwuid(stat_info.st_uid)[0] != 'root'):
+        print('The user of File {} is not root'.format(file_name))
+        return False
+    if (grp.getgrgid(stat_info.st_gid)[0] != 'horizon'):
+        print('The group ownership of file {} is not horizon'.format(file_name))
+        return False
+    try:
+        fl = open('/var/lib/config-data/puppet-generated/horizon/openstack-dashboard/local_settings.py', 'r')
+        config.read_string(fl.read())
+        if (not config['DISALLOW_IFRAME_EMBED']):
+            print("Dashboard can be embedded within a iframe")
+            return False
+        if (not config['CSRF_COOKIE_SECURE']):
+            print("CSRF exploit can be executed in the dashboard")
+            return False
+        if (not config['SESSION_COOKIE_SECURE']):
+            print("Cookie sessions can be used to exploit the dashboard")
+            return False
+        if (not config['SESSION_COOKIE_HTTPONLY']):
+            print("DOM exploits can be executed in the dashboard")
+            return False
+        if (config['PASSWORD_AUTOCOMPLETE']):
+            print("Password autocomplete is harmful for the dashboard")
+            return False
+        if (not config['DISABLE_PASSWORD_REVEAL']):
+            print("Password fields can be revealed in the dashboard")
+            return False
+        if (not config['ENFORCE_PASSWORD_CHECK']):
+            print("Password can be changed without admin permission")
+            return False
+        if (not config['PASSWORD_VALIDATOR']):
+            print("Password complexity can't be validated")
+            return False
+        if (not config['SECURE_PROXY_SSL_HEADER'] != 'HTTP_X_FORWARDED_PROTO' or not config['SECURE_PROXY_SSL_HEADER'] != 'https'):
+            print("Consider deploying dashboard behind a proxy")
+            return False
+        fl.close()
+    except:
+        return False
+    return True
 
 def check_nova_hardening():
     config = configparser.ConfigParser()
     config.read('/var/lib/config-data/puppet-generated/nova/etc/nova/nova.conf')
-    if(not config['DEFAULT']['auth_strategy'] != 'keystone')
+    filenames = [
+        '/var/lib/config-data/puppet-generated/nova/etc/nova/nova.conf',
+        '/var/lib/config-data/puppet-generated/nova/etc/nova/api-paste.ini',
+        '/var/lib/config-data/puppet-generated/nova/etc/nova/policy.json',
+        '/var/lib/config-data/puppet-generated/nova/etc/nova/rootwrap.conf',
+        '/var/lib/config-data/puppet-generated/nova/etc/nova']
+    for file in filenames:    
+        stat_info = os.stat(file)
+        if (pwd.getpwuid(stat_info.st_uid)[0] != 'root'):
+            print('The user of File {} is not root'.format(file))
+            return False
+        if (grp.getgrgid(stat_info.st_gid)[0] != 'nova'):
+            print('The group ownership of file {} is not nova'.format(file))
+            return False
+    if(not config['DEFAULT']['auth_strategy'] != 'keystone'):
         print('Authentication strategy should be keystone')
         return False
     if (config['keystone_authtoken']['auth_protocol'] != 'https' and
@@ -121,6 +180,12 @@ def check_keystone_hardening():
         not config['security_compliance']['lockout_duration']):
         print("Security Compliance configurations are not correct")
         return False
+    if (config['DEFAULT']['insecure_debug']):
+        print("Sending responses in http is not disabled during debug")
+        return False
+    if (not config['token']['provider'] != 'fernet' and config['token']['provider'] == 'uuid'):
+        print("Insecure token provider configured, use fernet")
+        return False
     if config['DEFAULT']['admin_token'] != 'disabled':
         print("Admin Token is not disabled")
         return False
@@ -147,15 +212,16 @@ def check_sixfourzero_filepermission():
                  '/var/lib/config-data/puppet-generated/nova/etc/nova/nova.conf',
                  '/var/lib/config-data/puppet-generated/nova/etc/nova/api-paste.ini',
                  '/var/lib/config-data/puppet-generated/nova/etc/nova/policy.json',
-                 '/var/lib/config-data/puppet-generated/nova/etc/nova/rootwrap.conf']
+                 '/var/lib/config-data/puppet-generated/nova/etc/nova/rootwrap.conf',
+                 '/var/lib/config-data/puppet-generated/horizon/etc/openstack-dashboard/local_settings.py']
     for file in filenames:
         stat_info = os.stat(file)
-        if (bool(stat_info.st_mode & stat.IXUSR) or
-            bool(stat_info.st_mode & stat.IWGRP) or
-            bool(stat_info.st_mode & stat.IXGRP) or
-            bool(stat_info.st_mode & stat.IROTH) or
-            bool(stat_info.st_mode & stat.IWOTH) or
-            bool(stat_info.st_mode & stat.IXOTH)):
+        if (bool(stat_info.st_mode & S_IXUSR(stat_info.st_mode)) or
+            bool(stat_info.st_mode & S_IWGRP(stat_info.st_mode)) or
+            bool(stat_info.st_mode & S_IXGRP(stat_info.st_mode)) or
+            bool(stat_info.st_mode & S_IROTH(stat_info.st_mode)) or
+            bool(stat_info.st_mode & S_IWOTH(stat_info.st_mode)) or
+            bool(stat_info.st_mode & S_IXOTH(stat_info.st_mode))):
             print('The File {} has wrong permission - FIX IT'.format(file))
             return False
     return True
@@ -173,7 +239,7 @@ def check_ug_keystone():
         if (pwd.getpwuid(stat_info.st_uid)[0] != 'keystone'):
             print('The user of File {} is not root'.format(file))
             return False
-        if (pwd.getgrpid(stat_info.st_gid)[0] != 'keystone'):
+        if (grp.getgrgid(stat_info.st_gid)[0] != 'keystone'):
             print('The group ownership of file {} is not keystone'.format(file))
             return False
     return True
@@ -185,12 +251,12 @@ def check_ug_root_nova():
                  '/var/lib/config-data/puppet-generated/nova/etc/nova/api-paste.ini',
                  '/var/lib/config-data/puppet-generated/nova/etc/nova/policy.json',
                  '/var/lib/config-data/puppet-generated/nova/etc/nova/rootwrap.conf']
-        for file in filenames:
+    for file in filenames:
         stat_info = os.stat(file)
         if (pwd.getpwuid(stat_info.st_uid)[0] != 'root'):
             print('The user of File {} is not root'.format(file))
             return False
-        if (pwd.getgrpid(stat_info.st_gid)[0] != 'nova'):
+        if (grp.getgrgid(stat_info.st_gid)[0] != 'nova'):
             print('The group ownership of file {} is not nova'.format(file))
             return False
     return True
@@ -206,7 +272,7 @@ def check_ug_root_neutron():
         if (pwd.getpwuid(stat_info.st_uid)[0] != 'root'):
             print('The user of File {} is not root'.format(file))
             return False
-        if (pwd.getgrpid(stat_info.st_gid)[0] != 'neutron'):
+        if (grp.getgrgid(stat_info.st_gid)[0] != 'neutron'):
             print('The group ownership of file {} is not neutron'.format(file))
             return False
     return True
@@ -222,7 +288,7 @@ def check_ug_root_cinder():
         if (pwd.getpwuid(stat_info.st_uid)[0] != 'root'):
             print('The user of File {} is not root'.format(file))
             return False
-        if (pwd.getgrpid(stat_info.st_gid)[0] != 'cinder'):
+        if (grp.getgrgid(stat_info.st_gid)[0] != 'cinder'):
             print('The group ownership of file {} is not cinder'.format(file))
             return False
     return True
@@ -233,14 +299,41 @@ def main():
     else:
         print('UG-ROOT-CINDER FAILED')
 
-    if check_ug_root_cinder():
+    if check_ug_root_neutron():
         print('UG-ROOT-NEUTRON PASSED')
     else:
         print('UG-ROOT-NEUTRON FAILED')
+
+    if check_ug_root_nova():
+        print('UG-ROOT-NOVA PASSED')
+    else:
+        print('UG-ROOT-NOVA FAILED')
+
     if check_sixfourzero_filepermission():
         print('ALL FILE PERMISSIONS ARE STRICT')
     else:
         print('SOME FILE PERMISSIONS ARE NOT STRICT')
+
+    if check_horizon_hardening():
+        print('UG-ROOT-HORIZON PASSED')
+    else:
+        print('UG-ROOT-HORIZON FAILED')
+    if check_keystone_hardening():
+        print('Keystone checklist PASSED')
+    else:
+        print('Keystone checklist FAILED')
+    if check_cinder_hardening():
+        print('Cinder checklist PASSED')
+    else:
+        print('Cinder checklist FAILED')
+    if check_neutron_hardening:
+        print('Neutron checklist PASSED')
+    else:
+        print('Neutron checklist FAILED')
+    if check_nova_hardening():
+        print('Nova checklist PASSED')
+    else:
+        print('Nova checklist FAILED')
 
 
 if __name__ == '__main__':
